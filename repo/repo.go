@@ -21,16 +21,13 @@ func (r flashcardRepo) CreateMatching(card entities.Matching) error {
 	if err != nil {
 		return ServerError
 	}
-	DbflashCardStruct := entities.DbFlashcard{}
+	DbflashCardStruct := entities.FlashCardStruct{}
 	err = json.Unmarshal(file, &DbflashCardStruct)
 	if err != nil {
 		return ServerError
 	}
 
-	for _, v := range DbflashCardStruct.FlashCardStruct {
-		v.Matching = append(v.Matching, card)
-
-	}
+	DbflashCardStruct.Matching = append(DbflashCardStruct.Matching, card)
 
 	Marshaled, err := json.MarshalIndent(&DbflashCardStruct, "", " ")
 	if err != nil {
@@ -47,16 +44,13 @@ func (r flashcardRepo) CreateTrueFalse(card entities.TrueFalse) error {
 	if err != nil {
 		return ServerError
 	}
-	DbflashCardStruct := entities.DbFlashcard{}
+	DbflashCardStruct := entities.FlashCardStruct{}
 	err = json.Unmarshal(file, &DbflashCardStruct)
 	if err != nil {
 		return ServerError
 	}
 
-	for _, v := range DbflashCardStruct.FlashCardStruct {
-		v.TrueFalse = append(v.TrueFalse, card)
-
-	}
+	DbflashCardStruct.TrueFalse = append(DbflashCardStruct.TrueFalse, card)
 
 	Marshaled, err := json.MarshalIndent(&DbflashCardStruct, "", " ")
 	if err != nil {
@@ -73,16 +67,13 @@ func (r flashcardRepo) CreateMultiple(card entities.Multiple) error {
 	if err != nil {
 		return ServerError
 	}
-	DbflashCardStruct := entities.DbFlashcard{}
+	DbflashCardStruct := entities.FlashCardStruct{}
 	err = json.Unmarshal(file, &DbflashCardStruct)
 	if err != nil {
 		return ServerError
 	}
 
-	for _, v := range DbflashCardStruct.FlashCardStruct {
-		v.Multiple = append(v.Multiple, card)
-
-	}
+	DbflashCardStruct.Multiple = append(DbflashCardStruct.Multiple, card)
 
 	Marshaled, err := json.MarshalIndent(&DbflashCardStruct, "", " ")
 	if err != nil {
@@ -99,16 +90,12 @@ func (r flashcardRepo) CreateInfo(card entities.Info) error {
 	if err != nil {
 		return ServerError
 	}
-	DbflashCardStruct := entities.DbFlashcard{}
+	DbflashCardStruct := entities.FlashCardStruct{}
 	err = json.Unmarshal(file, &DbflashCardStruct)
 	if err != nil {
 		return ServerError
 	}
-
-	for _, v := range DbflashCardStruct.FlashCardStruct {
-		v.Info = append(v.Info, card)
-
-	}
+	DbflashCardStruct.Info = append(DbflashCardStruct.Info, card)
 
 	Marshaled, err := json.MarshalIndent(&DbflashCardStruct, "", " ")
 	if err != nil {
@@ -125,16 +112,13 @@ func (r flashcardRepo) CreateQandA(card entities.QandA) error {
 	if err != nil {
 		return ServerError
 	}
-	DbflashCardStruct := entities.DbFlashcard{}
+	DbflashCardStruct := entities.FlashCardStruct{}
 	err = json.Unmarshal(file, &DbflashCardStruct)
 	if err != nil {
 		return ServerError
 	}
 
-	for _, v := range DbflashCardStruct.FlashCardStruct {
-		v.QandA = append(v.QandA, card)
-
-	}
+	DbflashCardStruct.QandA = append(DbflashCardStruct.QandA, card)
 
 	Marshaled, err := json.MarshalIndent(&DbflashCardStruct, "", " ")
 	if err != nil {

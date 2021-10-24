@@ -2,10 +2,6 @@ package entities
 
 import "github.com/google/uuid"
 
-type DbFlashcard struct {
-	FlashCardStruct []FlashCardStruct
-}
-
 type FlashCardStruct struct {
 	Matching  []Matching
 	TrueFalse []TrueFalse
@@ -41,10 +37,10 @@ type TrueFalse struct {
 }
 
 type Info struct {
-	Id       string
-	Type     string
-	Category string
-	Details  string
+	Id       string `json:"Id"`
+	Type     string `json:"Type"`
+	Category string `json:"Category"`
+	Details  string `json:"Details"`
 }
 
 type QandA struct {

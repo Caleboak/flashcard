@@ -6,6 +6,8 @@ import (
 	"net/http"
 
 	"privateFlashCard/entities"
+	"privateFlashCard/repo"
+	"privateFlashCard/service"
 
 	"github.com/gorilla/mux"
 )
@@ -41,7 +43,20 @@ func (f FlashcardHandler) CreateCard(w http.ResponseWriter, r *http.Request) {
 		}
 		err = f.serv.CreateMatching(matchcard)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			switch err {
+			case service.BadRequest:
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+
+			case repo.NotFound:
+				http.Error(w, err.Error(), http.StatusNotFound)
+				return
+
+			case repo.ServerError:
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+
+			}
 		}
 	case "Multiple":
 		multiplecard := entities.Multiple{}
@@ -51,7 +66,20 @@ func (f FlashcardHandler) CreateCard(w http.ResponseWriter, r *http.Request) {
 		}
 		err = f.serv.CreateMultiple(multiplecard)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			switch err {
+			case service.BadRequest:
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+
+			case repo.NotFound:
+				http.Error(w, err.Error(), http.StatusNotFound)
+				return
+
+			case repo.ServerError:
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+
+			}
 		}
 	case "TF":
 		tfcard := entities.TrueFalse{}
@@ -62,7 +90,20 @@ func (f FlashcardHandler) CreateCard(w http.ResponseWriter, r *http.Request) {
 		}
 		err = f.serv.CreateTrueFalse(tfcard)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			switch err {
+			case service.BadRequest:
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+
+			case repo.NotFound:
+				http.Error(w, err.Error(), http.StatusNotFound)
+				return
+
+			case repo.ServerError:
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+
+			}
 		}
 	case "Info":
 		infocard := entities.Info{}
@@ -73,7 +114,20 @@ func (f FlashcardHandler) CreateCard(w http.ResponseWriter, r *http.Request) {
 
 		err = f.serv.CreateInfo(infocard)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			switch err {
+			case service.BadRequest:
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+
+			case repo.NotFound:
+				http.Error(w, err.Error(), http.StatusNotFound)
+				return
+
+			case repo.ServerError:
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+
+			}
 		}
 	case "QandA":
 		QandAcard := entities.QandA{}
@@ -84,11 +138,25 @@ func (f FlashcardHandler) CreateCard(w http.ResponseWriter, r *http.Request) {
 
 		err = f.serv.CreateQandA(QandAcard)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			switch err {
+			case service.BadRequest:
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+
+			case repo.NotFound:
+				http.Error(w, err.Error(), http.StatusNotFound)
+				return
+
+			case repo.ServerError:
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+
+			}
 		}
 	}
 
 	w.WriteHeader(http.StatusCreated)
+	w.Write([]byte("Well done, Flashcard is Created"))
 	w.Header().Set("Content-Type", "application/json")
 
 }

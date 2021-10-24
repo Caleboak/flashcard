@@ -85,7 +85,7 @@ func (f FlashcardService) CreateMatching(card entities.Matching) error {
 		}
 	}
 
-	return nil
+	return f.Repo.CreateMatching(card)
 
 }
 
@@ -110,7 +110,7 @@ func (f FlashcardService) CreateTrueFalse(card entities.TrueFalse) error {
 
 	}
 
-	return nil
+	return f.Repo.CreateTrueFalse(card)
 }
 
 func (f FlashcardService) CreateInfo(card entities.Info) error {
@@ -129,7 +129,7 @@ func (f FlashcardService) CreateInfo(card entities.Info) error {
 	if len(cardDetails) == 0 {
 		return BadRequest
 	}
-	return nil
+	return f.Repo.CreateInfo(card)
 
 }
 
@@ -165,7 +165,7 @@ func (f FlashcardService) CreateMultiple(card entities.Multiple) error {
 	} else if _, ok := cardOption[cardAnswer]; !ok {
 		return BadRequest
 	}
-	return nil
+	return f.Repo.CreateMultiple(card)
 
 }
 
@@ -189,6 +189,6 @@ func (f FlashcardService) CreateQandA(card entities.QandA) error {
 	if len(cardAnswer) == 0 {
 		return BadRequest //bad request
 	}
-	return nil
+	return f.Repo.CreateQandA(card)
 
 }

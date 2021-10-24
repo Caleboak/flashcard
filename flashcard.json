@@ -1,11 +1,26 @@
 {
-  "Flashcard":[
-    {
-      "Matching":[],
-      "TrueFalse":[],
-      "Multiple":[],
-      "Info":[],
-      "QandA":[]
-    }
-  ]
+ "Matching": [],
+ "TrueFalse": [],
+ "Multiple": [],
+ "Info": [
+  {
+   "Id": "f5baab4c-4601-4111-b5cb-7959e97e0610",
+   "Type": "Info",
+   "Category": "golang",
+   "Details": "It helps"
+  },
+  {
+   "Id": "ac738336-ee5d-4ff2-86e4-e9706efd1557",
+   "Type": "Info",
+   "Category": "golang",
+   "Details": "It helps"
+  },
+  {
+   "Id": "bcd19e61-965d-4ffb-b660-4c7c06831d30",
+   "Type": "Info",
+   "Category": "golang",
+   "Details": "It helps"
+  }
+ ],
+ "QandA": []
 }
