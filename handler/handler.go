@@ -31,6 +31,7 @@ func NewFlashcardHandler(f IFlashcardService) FlashcardHandler {
 }
 
 func (f FlashcardHandler) CreateCard(w http.ResponseWriter, r *http.Request) {
+
 	vars := mux.Vars(r)
 	cardtype := vars["Type"]
 
@@ -81,7 +82,7 @@ func (f FlashcardHandler) CreateCard(w http.ResponseWriter, r *http.Request) {
 
 			}
 		}
-	case "TF":
+	case "TrueFalse":
 		tfcard := entities.TrueFalse{}
 		err := json.NewDecoder(r.Body).Decode(&tfcard)
 		if err != nil {

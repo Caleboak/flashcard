@@ -1,7 +1,7 @@
 package service
 
 import (
-	"reflect"
+	"fmt"
 	"strings"
 
 	"privateFlashCard/entities"
@@ -42,7 +42,7 @@ func (f FlashcardService) CreateMatching(card entities.Matching) error {
 		return BadRequest //bad request
 	} else {
 		for _, v := range cardQuestion {
-			if reflect.ValueOf(v).IsNil() {
+			if v == nil {
 				return BadRequest //bad request
 
 			}
@@ -52,7 +52,7 @@ func (f FlashcardService) CreateMatching(card entities.Matching) error {
 		return BadRequest //bad request
 	} else {
 		for _, v := range cardOption {
-			if reflect.ValueOf(v).IsNil() {
+			if v == nil {
 				return BadRequest //bad request
 			}
 		}
@@ -60,24 +60,37 @@ func (f FlashcardService) CreateMatching(card entities.Matching) error {
 	if len(cardAnswer) != len(cardQuestion) {
 		return BadRequest //bad request
 	} else {
-		for _, v := range cardAnswer {
-			if reflect.ValueOf(v).IsNil() {
+		for k, v := range cardAnswer {
+			if v == nil {
 				return BadRequest //bad request
-			} else {
-				upperCase := strings.ToUpper(v.(string))
-				lowerCase := strings.ToLower(v.(string))
-				found := true
-				if _, ok := cardQuestion[upperCase]; !ok {
+			} else { //where my issue is with the interface to string
+				valStr := fmt.Sprint(v)
+				upperCaseVal := strings.ToUpper(valStr)
+				lowerCaseVal := strings.ToLower(valStr)
+				upperCaseKey := strings.ToUpper(k)
+				lowerCaseKey := strings.ToLower(k)
+				found := false
+				//The main issue
+				//compare the question with the key of the cardAnswer
+				if _, ok := cardQuestion[upperCaseKey]; ok {
 					found = true
 				}
-				if _, ok := cardQuestion[lowerCase]; !ok {
+				if _, ok := cardQuestion[lowerCaseKey]; ok {
 					found = true
 				}
 				if !found {
 					return BadRequest //bad request
 				}
-				val := cardAnswer[v.(string)]
-				if _, ok := cardOption[val.(string)]; !ok {
+
+				//compare the option with the value of the cardAnswer
+				found = false
+				if _, ok := cardOption[upperCaseVal]; ok {
+					found = true
+				}
+				if _, ok := cardOption[lowerCaseVal]; ok {
+					found = true
+				}
+				if !found {
 					return BadRequest //bad request
 				}
 			}
@@ -94,7 +107,7 @@ func (f FlashcardService) CreateTrueFalse(card entities.TrueFalse) error {
 	cardType := strings.ToLower(card.Type)
 	cardCategory := strings.ToLower(card.Category)
 	cardQuestion := card.Question
-	cardTf := card.Tf
+	cardTf := strings.ToLower(card.Answer)
 
 	if cardType != "truefalse" {
 		return BadRequest //bad request
@@ -105,7 +118,7 @@ func (f FlashcardService) CreateTrueFalse(card entities.TrueFalse) error {
 	if len(cardQuestion) == 0 {
 		return BadRequest //bad request
 	}
-	if cardTf != true || cardTf != false {
+	if cardTf != "true" && cardTf != "false" {
 		return BadRequest
 
 	}
@@ -148,14 +161,14 @@ func (f FlashcardService) CreateMultiple(card entities.Multiple) error {
 	if cardCategory != "golang" {
 		return BadRequest //bad request
 	}
-	if len(cardQuestion) == 0 {
+	if len(cardQuestion) == 0 || len(cardQuestion) < 2 {
 		return BadRequest //bad request
 	}
 	if len(cardOption) == 0 {
 		return BadRequest //bad request
 	} else {
 		for _, v := range cardOption {
-			if reflect.ValueOf(v).IsNil() {
+			if v == nil {
 				return BadRequest //bad request
 			}
 		}
@@ -183,10 +196,10 @@ func (f FlashcardService) CreateQandA(card entities.QandA) error {
 	if cardCategory != "golang" {
 		return BadRequest //bad request
 	}
-	if len(cardQuestion) == 0 {
+	if len(cardQuestion) == 0 || len(cardQuestion) < 2 {
 		return BadRequest //bad request
 	}
-	if len(cardAnswer) == 0 {
+	if len(cardAnswer) == 0 || len(cardQuestion) < 2 {
 		return BadRequest //bad request
 	}
 	return f.Repo.CreateQandA(card)

@@ -56,7 +56,10 @@ func (r flashcardRepo) CreateTrueFalse(card entities.TrueFalse) error {
 	if err != nil {
 		return ServerError
 	}
-	ioutil.WriteFile(r.filename, Marshaled, 0644)
+	err = ioutil.WriteFile(r.filename, Marshaled, 0644)
+	if err != nil {
+		return ServerError
+	}
 
 	return nil
 

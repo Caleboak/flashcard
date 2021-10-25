@@ -11,12 +11,12 @@ type FlashCardStruct struct {
 }
 
 type Matching struct {
-	Id       string
-	Type     string
-	Category string
-	Question map[string]interface{}
-	Options  map[string]interface{}
-	Answer   map[string]interface{}
+	Id       string                 `json:"Id"`
+	Type     string                 `json:"Type"`
+	Category string                 `json:"Category"`
+	Question map[string]interface{} `json:"Question"`
+	Options  map[string]interface{} `json:"Options"`
+	Answer   map[string]interface{} `json:"Answer"`
 }
 
 type Multiple struct {
@@ -29,11 +29,11 @@ type Multiple struct {
 }
 
 type TrueFalse struct {
-	Id       string
-	Type     string
-	Category string
-	Question string
-	Tf       bool
+	Id       string `json:"Id"`
+	Type     string `json:"Type"`
+	Category string `json:"Category"`
+	Question string `json:"Question"`
+	Answer   string `json:"Answer"`
 }
 
 type Info struct {
