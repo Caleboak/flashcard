@@ -24,8 +24,8 @@ func main() {
 		log.Fatalln("Invalid file")
 	}
 
-	repo := repo.NewFlashcardRepo(filename)
-	serv := service.NewFlashcardService(repo)
+	Repo := repo.NewFlashcardRepo(filename)
+	serv := service.NewFlashcardService(Repo)
 	handle := handler.NewFlashcardHandler(serv)
 
 	router := handler.ConfigureRouter(handle)

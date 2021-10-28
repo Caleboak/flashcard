@@ -2,9 +2,8 @@ package service
 
 import (
 	"fmt"
-	"strings"
-
 	"privateFlashCard/entities"
+	"strings"
 )
 
 type IFlashcardRepo interface {
@@ -13,6 +12,10 @@ type IFlashcardRepo interface {
 	CreateMultiple(entities.Multiple) error
 	CreateInfo(entities.Info) error
 	CreateQandA(entities.QandA) error
+	GetAll() ([]entities.FlashCardStruct, error)
+	GetById(string) (interface{}, error)
+	GetByType(string) (interface{}, error)
+	UpdateById(string) error
 }
 
 type FlashcardService struct {
@@ -27,8 +30,8 @@ func NewFlashcardService(f IFlashcardRepo) FlashcardService {
 
 func (f FlashcardService) CreateMatching(card entities.Matching) error {
 	card.SetMatchingId()
-	cardType := strings.ToLower(card.Type)
-	cardCategory := strings.ToLower(card.Category)
+	cardType := strings.ToLower(card.Type)         //change to lowercase for comparison
+	cardCategory := strings.ToLower(card.Category) //change to lowercase for comparison
 	cardQuestion := card.Question
 	cardOption := card.Options
 	cardAnswer := card.Answer
@@ -41,7 +44,7 @@ func (f FlashcardService) CreateMatching(card entities.Matching) error {
 	if len(cardQuestion) == 0 {
 		return BadRequest //bad request
 	} else {
-		for _, v := range cardQuestion {
+		for _, v := range cardQuestion { //loop through the map to chack every key has a value
 			if v == nil {
 				return BadRequest //bad request
 
@@ -64,7 +67,7 @@ func (f FlashcardService) CreateMatching(card entities.Matching) error {
 			if v == nil {
 				return BadRequest //bad request
 			} else { //where my issue is with the interface to string
-				valStr := fmt.Sprint(v)
+				valStr := fmt.Sprint(v) //write the interface as a string
 				upperCaseVal := strings.ToUpper(valStr)
 				lowerCaseVal := strings.ToLower(valStr)
 				upperCaseKey := strings.ToUpper(k)
@@ -97,33 +100,36 @@ func (f FlashcardService) CreateMatching(card entities.Matching) error {
 
 		}
 	}
-
 	return f.Repo.CreateMatching(card)
 
 }
 
 func (f FlashcardService) CreateTrueFalse(card entities.TrueFalse) error {
 	card.SetTrueFalseId()
+
 	cardType := strings.ToLower(card.Type)
 	cardCategory := strings.ToLower(card.Category)
 	cardQuestion := card.Question
-	cardTf := strings.ToLower(card.Answer)
+	cardAnswer := strings.ToLower(card.Answer)
 
 	if cardType != "truefalse" {
-		return BadRequest //bad request
+		return BadRequest
 	}
+
 	if cardCategory != "golang" {
-		return BadRequest //bad request
+		return BadRequest
 	}
+
 	if len(cardQuestion) == 0 {
 		return BadRequest //bad request
 	}
-	if cardTf != "true" && cardTf != "false" {
+	if cardAnswer != "true" && cardAnswer != "false" {
 		return BadRequest
 
 	}
 
 	return f.Repo.CreateTrueFalse(card)
+
 }
 
 func (f FlashcardService) CreateInfo(card entities.Info) error {
@@ -204,4 +210,45 @@ func (f FlashcardService) CreateQandA(card entities.QandA) error {
 	}
 	return f.Repo.CreateQandA(card)
 
+}
+
+func (f FlashcardService) GetAll() ([]entities.FlashCardStruct, error) {
+	allCards, err := f.Repo.GetAll()
+	if err != nil {
+		return allCards, BadRequest
+	}
+
+	return allCards, nil
+
+}
+
+func (f FlashcardService) GetById(id string) (interface{}, error) {
+	deck := entities.FlashCardStruct{}
+	if len(id) == 0 {
+		return deck, InvalidId
+	}
+	return f.Repo.GetById(id)
+}
+
+func (f FlashcardService) GetByType(cardType string) (interface{}, error) {
+	validType := map[string]interface{}{
+		"Info":      true,
+		"QandA":     true,
+		"TrueFalse": true,
+		"Matching":  true,
+		"Multiple":  true,
+	}
+
+	if _, ok := validType[cardType]; !ok {
+		return nil, InvalidType
+	}
+	return f.Repo.GetByType(cardType)
+}
+
+func (f FlashcardService) UpdateById(id string) error {
+
+	if len(id) == 0 {
+		return InvalidId
+	}
+	return f.Repo.UpdateById(id)
 }

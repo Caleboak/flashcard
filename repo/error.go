@@ -1,9 +1,12 @@
 package repo
 
-import "errors"
+import (
+	"errors"
+)
 
 var (
-	NotFound    error = errors.New("not found")
-	BadRequest  error = errors.New("bad request")
-	ServerError error = errors.New("server error")
+	BadRequest error = errors.New("bad request")
+	InvalidId  error = errors.New("invalid id")
+	NotFound   error = errors.New("card not found")
+	CardEmpty  error = errors.New("card is empty")
 )
